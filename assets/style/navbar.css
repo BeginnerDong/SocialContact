@@ -1,0 +1,42 @@
+/**app.wxss**/
+
+/***********navbar***********/
+.navbar{
+	height:110rpx;
+	width:100%;
+	position:fixed;
+	bottom:0rpx;
+	z-index:30;
+	background:#fff;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	text-align:center;
+	box-shadow:0rpx 0rpx 15rpx #D5D5D5;
+}
+.navbar_item{
+	width: 33.3%;
+	text-align:center;
+	position: relative;
+}
+.nav_img image{
+	width:44rpx;
+	height:44rpx;
+	display: block;
+	margin: 0 auto;
+}
+
+.nav_two image{width: 100rpx;height: 100rpx;margin-top: -100rpx;position: relative;}
+
+.navbar .text{
+	color:#999999;
+	font-size:24rpx;
+	margin-top: 14rpx;
+	line-height: 20rpx;
+}
+.navbar .this-text{
+	color:#0a6b67;
+}
+
+/***********navbar***********/
+

@@ -1,0 +1,12 @@
+
+
+.personList .item{margin-bottom: 30rpx;border-radius: 24rpx;background: #fff;}
+.personList .picbox{width: 100%;height: 690rpx;border-radius:24rpx;overflow: hidden;position: relative;}
+.personList .picbox .pic{width: 100%;height: 100%;}
+.fixInfor{padding: 30rpx 4%;position: absolute;left: 0;right: 0;bottom: 0;z-index: 2;background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.6));}
+.fixInfor .photo{width: 60rpx;height: 60rpx;border-radius: 50%;box-sizing: border-box;border:1px solid #0A6B67;margin-right: 10rpx;}
+.fixInfor .xin{width: 36rpx;height: 33rpx;display: block;margin-right: 10rpx;}
+.titBox .ll{width: 80%;}
+.titBox .rr{width: 20%;}
+.titBox .seeIcon{width: 36rpx;height: 24rpx;margin-right: 10rpx;}
+
