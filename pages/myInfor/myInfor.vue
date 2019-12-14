@@ -4,14 +4,14 @@
 		<view class="cont">
 			<view class="center mgb30">你是</view>
 			<view class="selt-sex fs13 flexRowBetween center">
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/myInforEdit/myInforEdit'}})">
-					<view class="photo"  >
+				<view class="item" @click="currSex('1')">
+					<view class="photo"   @click="Router.navigateTo({route:{path:'/pages/myInforEdit/myInforEdit'}})">
 						<image class="pto" :src="curr==1?'../../static/images/data-icon2.png':'../../static/images/data-icon.png'" mode=""></image>
 					</view>
 					<view class="pdt10">男生</view>
 				</view>
-				<view class="item" @click="Router.navigateTo({route:{path:'/pages/myInforEdit/myInforEdit'}})">
-					<view class="photo">
+				<view class="item" @click="currSex('2')">
+					<view class="photo" @click="Router.navigateTo({route:{path:'/pages/myInforEdit/myInforEdit'}})">
 						<image class="pto" :src="curr==2?'../../static/images/data-icon3.png':'../../static/images/data-icon1.png'" mode=""></image>
 					</view>
 					<view class="pdt10">女生</view>
@@ -61,25 +61,13 @@
 			const self = this;
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
-		mounted() {
-			// 导航当前项
-			const self = this;
-			var pages = getCurrentPages();
-			var page = pages[pages.length - 1].route;
-			console.log('222',page)
-			if(page=='pages/myInforEdit/myInforEdit'){
-				self.curr=1
-			}else if(page=='pages/myInforEdit/myInforEdit'){
-				self.curr=2
-			}
-		},
 		methods: {
-			// currSex(curr){
-			// 	const self = this;
-			// 	if(curr!=self.curr){
-			// 		self.curr = curr
-			// 	}
-			// },
+			currSex(curr){
+				const self = this;
+				if(curr!=self.curr){
+					self.curr = curr
+				}
+			},
 			getMainData() {
 				const self = this;
 				console.log('852369')
