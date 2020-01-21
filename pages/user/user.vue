@@ -1,15 +1,18 @@
 <template>
-	<view>
+	<view v-if="showAll">
 		<view class="whiteBj">
 			<view class="userHead pdlr4">
 				<view class="infor flexColumn">
-					<view class="flexCenter"><image class="userPhoto" src="../../static/images/user-icon.png" mode=""></image></view>
-					<view class="pdt10">多啦A梦</view>
+					<view class="flexCenter" 
+					style="width: 120rpx;height: 120rpx;border-radius: 50%;overflow: hidden;">
+						<open-data type="userAvatarUrl"></open-data>
+					</view>
+					<view class="pdt10"><open-data type="userNickName"></open-data></view>
 				</view>
 			</view>
 			
 			<view class="myRowBetween mglr4 fs13" style="padding-top: 100rpx;">
-				<view class="item flexRowBetween" @click="Router.navigateTo({route:{path:'/pages/myInfor/myInfor'}})" >
+				<view class="item flexRowBetween" @click="goPath()" v-if="kefuData.url!='1'">
 					<view class="ll flex">
 						<image class="icon" src="../../static/images/about-icon1.png" mode=""></image>
 						<view class="">我的资料</view>
@@ -49,7 +52,7 @@
 				</view>
 				<view class="text">首页</view>
 			</view>
-			<view class="navbar_item" @click="Router.redirectTo({route:{path:'/pages/myInfor/myInfor'}})">
+			<view class="navbar_item" @click="goPath()" v-if="kefuData.url!='1'">
 				<view class="nav_img nav_two">
 					<image src="../../static/images/nabar2.png" />
 				</view>
@@ -74,15 +77,65 @@
 				Router:this.$Router,
 				showView: false,
 				score:'',
-				wx_info:{}
+				wx_info:{},
+				showAll:false,
+				kefuData:{}
 			}
 		},
-		onLoad() {
+		
+		onShow() {
 			const self = this;
-			//self.$Utils.loadAll(['getMainData'], self);
+			const callback = (res) => {
+					self.$Utils.loadAll(['getUserInfoData','getKefuData'], self);
+			};
+			self.$Token.getProjectToken(callback, {
+				refreshToken: true
+			})
+		
 		},
+		
 		methods: {
-
+			
+			goPath(){
+				const self = this;
+				if(self.userInfoData.gender!=''){
+					self.Router.navigateTo({route:{path:'/pages/personInfor/personInfor?user_no='+uni.getStorageSync('user_info').user_no}})
+				}else{
+					self.Router.navigateTo({route:{path:'/pages/myInfor/myInfor'}})
+				}
+			},
+			
+			getKefuData() {
+				const self = this;
+				const postData = {};
+				postData.searchItem = {
+					title:'客服',
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.kefuData = res.info.data[0]
+						self.showAll = true
+					}
+					self.$Utils.finishFunc('getKefuData');
+				};
+				self.$apis.labelGet(postData, callback);
+			},
+			
+			getUserInfoData() {
+				const self = this;
+				const postData = {};
+				postData.tokenFuncName = 'getProjectToken';
+				postData.searchItem = {
+					user_no:uni.getStorageSync('user_info').user_no
+				};
+				const callback = (res) => {
+					if (res.info.data.length > 0) {
+						self.userInfoData = res.info.data[0];
+					}
+					self.$Utils.finishFunc('getUserInfoData');
+				};
+				self.$apis.userInfoGet(postData, callback);
+			},
 
 		},
 	};

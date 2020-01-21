@@ -1,121 +1,318 @@
 <template>
 	<view>
-		
+
 		<view class="mglr4">
 			<view class="myRowBetween fs13">
 				<view class="item flexRowBetween">
 					<view class="ll">性别</view>
 					<view class="rr" @click="sexShow">
-						<text class="color9">请选择</text>
+						<text class="color9">{{search.gender!=''?search.gender:'请选择'}}</text>
 						<image class="arrowR" src="../../static/images/data-icon8.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item flexRowBetween">
 					<view class="ll">年龄</view>
 					<view class="rr" @click="ageShow">
-						<text class="color9">请选择</text>
+						<text class="color9">{{search.age!=''?search.age:'请选择'}}</text>
 						<image class="arrowR" src="../../static/images/data-icon8.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item flexRowBetween">
 					<view class="ll">学历</view>
 					<view class="rr" @click="educationShow">
-						<text class="color9">请选择</text>
+						<text class="color9">{{search.education!=''?search.education:'请选择'}}</text>
 						<image class="arrowR" src="../../static/images/data-icon8.png" mode=""></image>
 					</view>
 				</view>
 				<view class="item flexRowBetween">
-					<view class="ll">地区</view>
+					<view class="ll">市</view>
 					<view class="rr">
-						<text class="color9">请选择</text>
+						<picker mode="selector" @change="cityChange" :range="array" range-key="city">
+							<view>{{array[cityIndex].city?array[cityIndex].city:'请选择'}}</view>
+						</picker>
+
+						<image class="arrowR" src="../../static/images/data-icon8.png" mode=""></image>
+					</view>
+				</view>
+				<view class="item flexRowBetween">
+					<view class="ll">区</view>
+					<view class="rr">
+						<picker mode="selector" @change="areaChange" :range="array[cityIndex].area" range-key="name">
+							<view>{{array[cityIndex]&&array[cityIndex].area[areaIndex]?array[cityIndex].area[areaIndex].name:'请选择'}}</view>
+						</picker>
+
 						<image class="arrowR" src="../../static/images/data-icon8.png" mode=""></image>
 					</view>
 				</view>
 			</view>
 			<view class="flexEnd pdtb15">
-				<view class="tagBtn fs12 color6">重置</view>
+				<view class="tagBtn fs12 color6" @click="reset()">重置</view>
 			</view>
-			
+
 			<view class="submitbtn" style="margin-top: 200rpx;">
-				<button class="btn" type="button">确定</button>
+				<button class="btn" type="button" @click="back">确定</button>
 			</view>
-			
+
 			<view class="black-bj" v-show="is_show"></view>
-			
+
 			<!-- 性别选择 -->
 			<view class="alertShow radius10" v-show="is_sexShow">
-				<view class="item" @click="sexShow" v-for="(item,index) in sexDate" :key="index" >{{item}}</view>
+				<view class="item" @click="choose(item,'gender')" v-for="(item,index) in sexDate" :key="index">{{item}}</view>
 			</view>
-			
+
 			<!-- 年龄选择 -->
 			<view class="alertShow radius10" v-show="is_ageShow">
-				<view class="item" @click="ageShow" v-for="(item,index) in ageDate" :key="index" >{{item}}</view>
+				<view class="item" @click="choose(item,'age')" v-for="(item,index) in ageDate" :key="index">{{item}}</view>
 			</view>
-			
+
 			<!-- 年龄选择 -->
 			<view class="alertShow radius10" v-show="is_educationShow">
-				<view class="item" @click="educationShow" v-for="(item,index) in educationDate" :key="index" >{{item}}</view>
+				<view class="item" @click="choose(item,'education')" v-for="(item,index) in educationDate" :key="index">{{item}}</view>
 			</view>
-			
+
 		</view>
-		
+
 	</view>
-	
+
 </template>
 
 <script>
 	export default {
 		data() {
 			return {
-				Router:this.$Router,
+				Router: this.$Router,
 				showView: false,
-				wx_info:{},
-				is_show:false,
-				is_sexShow:false,
-				sexDate:['男','女'],
-				is_ageShow:false,
-				ageDate:['18-24岁','24岁-30岁','30-38岁','38岁以上'],
-				is_educationShow:false,
-				educationDate:['高中及高中以下学历','大专','本科','研究生及研究生以上']
+				wx_info: {},
+				is_show: false,
+				is_sexShow: false,
+				sexDate: ['男', '女'],
+				is_ageShow: false,
+				ageDate: ['18-24岁', '24-30岁', '30-38岁', '38岁以上'],
+				is_educationShow: false,
+				educationDate: ['高中及高中以下学历', '大专', '本科', '研究生及研究生以上'],
+				search: {},
+				region: ['陕西省', '西安市', '新城区'],
+
+				array: [{
+						city: "西安市",
+						area: [{
+								name: "新城区"
+							},
+							{
+								name: "碑林区"
+							},
+							{
+								name: "莲湖区"
+							},
+							{
+								name: "灞桥区"
+							},
+							{
+								name: "未央区"
+							},
+							{
+								name: "雁塔区"
+							},
+							{
+								name: "阎良区"
+							},
+							{
+								name: "临潼区"
+							},
+							{
+								name: "长安区"
+							},
+							{
+								name: "高陵区"
+							},
+							{
+								name: "鄠邑区"
+							},
+							{
+								name: "蓝田县"
+							},
+							{
+								name: "周至县"
+							}
+						],
+					},
+					{
+						city: "铜川市",
+						area: [{name:'王益区'},{name:'印台区'},{name:'耀州区'},{name:'宜君县'}]
+					},
+					{
+						city: "宝鸡市",
+						area: [{name:'渭滨区'},{name:'金台区'},{name:'陈仓区'},{name:'凤翔县'},{name:'岐山县'},{name:'扶风县'}
+						,{name:'眉县'},{name:'陇县'},{name:'千阳县'},{name:'麟游县'},{name:'凤县'},{name:'太白县'}]
+					},
+					
+					{
+						city: "咸阳市",
+						area: [{name:'秦都区'},{name:'杨陵区'},{name:'渭城区'},{name:'三原县'},{name:'泾阳县'},{name:'乾县'}
+						,{name:'礼泉县'},{name:'永寿县'},{name:'彬县'},{name:'长武县'},{name:'旬邑县'},{name:'淳化县'},{name:'武功县'},{name:'兴平市'}]
+					},
+					
+					{
+						city: "渭南市",
+						area: [{name:'临渭区'},{name:'华州区'},{name:'潼关县'},{name:'大荔县'},{name:'合阳县'},{name:'澄城县'}
+						,{name:'蒲城县'},{name:'白水县'},{name:'富平县'},{name:'韩城市'},{name:'华阴市'}]
+					},
+					{
+						city: "延安市",
+						area: [{name:'宝塔区'},{name:'安塞区'},{name:'延长县'},{name:'延川县'},{name:'子长县'},{name:'志丹县'}
+						,{name:'吴起县'},{name:'甘泉县'},{name:'富县'},{name:'洛川县'},{name:'宜川县'},{name:'黄龙县'},{name:'黄陵县'}]
+					},
+					{
+						city: "汉中市",
+						area: [{name:'汉台区'},{name:'南郑区'},{name:'城固县'},{name:'洋县'},{name:'西乡县'},{name:'勉县'}
+						,{name:'宁强县'},{name:'略阳县'},{name:'镇巴县'},{name:'留坝县'},{name:'佛坪县'}]
+					},
+					{
+						city: "榆林市",
+						area: [{name:'榆阳区'},{name:'横山区'},{name:'府谷县'},{name:'靖边县'},{name:'定边县'},{name:'绥德县'}
+						,{name:'米脂县'},{name:'佳县'},{name:'吴堡县'},{name:'清涧县'},{name:'子洲县'},{name:'神木市'}]
+					},
+					{
+						city: "安康市",
+						area: [{name:'汉滨区'},{name:'汉阴县'},{name:'石泉县'},{name:'宁陕县'},{name:'紫阳县'},{name:'岚皋县'}
+						,{name:'平利县'},{name:'镇坪县'},{name:'旬阳县'},{name:'白河县'}]
+					},
+					{
+						city: "商洛市",
+						area: [{name:'商州区'},{name:'洛南县'},{name:'丹凤县'},{name:'商南县'},{name:'山阳县'},{name:'镇安县'}
+						,{name:'柞水县'}]
+					}
+				],
+				cityIndex:-1,
+				areaIndex:-1
 			}
 		},
-		
+
 		onLoad() {
 			const self = this;
+			self.search = uni.getStorageSync('search');
+			console.log(self.search)
+			for (var i = 0; i < self.array.length; i++) {
+				if(self.array[i].city==self.search.address[0]){
+					self.cityIndex = i
+				}
+			};
+			if(self.cityIndex>-1){
+				for (var i = 0; i < self.array[self.cityIndex].area.length; i++) {
+					if(self.array[self.cityIndex].area[i].name==self.search.address[1]){
+						self.areaIndex = i
+					}
+				};
+			};
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
+
 		methods: {
-			sexShow(){
+
+			reset() {
+				const self = this;
+				self.search = {
+					gender: '',
+					age: '',
+					education: '',
+					address: []
+				};
+				self.areaIndex=-1;
+				self.cityIndex=-1;
+			},
+
+			back() {
+				const self = this;
+				uni.removeStorageSync('search');
+				uni.setStorageSync('isNew', true);
+				uni.setStorageSync('search', self.search);
+				uni.navigateBack({
+					delta: 1
+				})
+			},
+
+			choose(item, type) {
+				const self = this;
+				console.log(item);
+				console.log(type);
+				self.search[type] = item;
+				self.is_show = false;
+				self.is_sexShow = false;
+				self.is_ageShow = false;
+				self.is_educationShow = false
+			},
+
+			sexShow() {
 				const self = this;
 				self.is_show = !self.is_show
 				self.is_sexShow = !self.is_sexShow
 			},
-			ageShow(){
+
+			ageShow() {
 				const self = this;
 				self.is_show = !self.is_show
 				self.is_ageShow = !self.is_ageShow
 			},
-			educationShow(){
+
+			regionChange(e) {
+				const self = this;
+				self.search.address = e.detail.value;
+			},
+			
+			cityChange(e){
+				const self = this;
+				self.search.address = [];
+				self.cityIndex = e.detail.value;
+				self.areaIndex = -1;
+				
+				self.search.address[0] = self.array[e.detail.value].city;
+				console.log(self.array)
+				console.log(self.array[self.cityIndex])
+			},
+			
+			areaChange(e){
+				const self = this;
+				self.areaIndex = e.detail.value;
+				self.search.address[1] = self.array[self.cityIndex].area[e.detail.value].name;
+			},
+
+			educationShow() {
 				const self = this;
 				self.is_show = !self.is_show
 				self.is_educationShow = !self.is_educationShow
 			},
-			getMainData() {
-				const self = this;
-				console.log('852369')
-				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+
 		}
 	};
 </script>
 
 <style>
 	@import "../../assets/style/editInfor.css";
-	
-	.tagBtn{width: 120rpx;line-height: 50rpx;border-radius: 30rpx;background: #ececec;text-align: center;}
-	.alertShow{width: 80%;background: #fff;position:fixed ;top: 50%;left: 50%;z-index: 60;transform: translate(-50%,-50%);}
-	.alertShow .item{padding: 30rpx 5%;border-bottom: 1px solid #eee;}
-	.alertShow .item:last-child{border-bottom: 0;}
+
+	.tagBtn {
+		width: 120rpx;
+		line-height: 50rpx;
+		border-radius: 30rpx;
+		background: #ececec;
+		text-align: center;
+	}
+
+	.alertShow {
+		width: 80%;
+		background: #fff;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		z-index: 60;
+		transform: translate(-50%, -50%);
+	}
+
+	.alertShow .item {
+		padding: 30rpx 5%;
+		border-bottom: 1px solid #eee;
+	}
+
+	.alertShow .item:last-child {
+		border-bottom: 0;
+	}
 </style>

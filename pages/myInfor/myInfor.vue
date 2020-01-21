@@ -5,13 +5,13 @@
 			<view class="center mgb30">你是</view>
 			<view class="selt-sex fs13 flexRowBetween center">
 				<view class="item" @click="currSex('1')">
-					<view class="photo"   @click="Router.navigateTo({route:{path:'/pages/myInforEdit/myInforEdit'}})">
+					<view class="photo">
 						<image class="pto" :src="curr==1?'../../static/images/data-icon2.png':'../../static/images/data-icon.png'" mode=""></image>
 					</view>
 					<view class="pdt10">男生</view>
 				</view>
 				<view class="item" @click="currSex('2')">
-					<view class="photo" @click="Router.navigateTo({route:{path:'/pages/myInforEdit/myInforEdit'}})">
+					<view class="photo">
 						<image class="pto" :src="curr==2?'../../static/images/data-icon3.png':'../../static/images/data-icon1.png'" mode=""></image>
 					</view>
 					<view class="pdt10">女生</view>
@@ -61,13 +61,20 @@
 			const self = this;
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
+		
 		methods: {
+			
 			currSex(curr){
 				const self = this;
+				if(parseInt(self.curr)>0){
+					self.Router.redirectTo({route:{path:'/pages/myInforEdit/myInforEdit?gender='+self.curr}})
+					return
+				};
 				if(curr!=self.curr){
 					self.curr = curr
-				}
+				};
 			},
+			
 			getMainData() {
 				const self = this;
 				console.log('852369')

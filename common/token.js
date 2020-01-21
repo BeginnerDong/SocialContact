@@ -352,7 +352,7 @@ class Token {
                 };
                 console.log('postData',postData)
                 uni.request({
-                    url: config.baseUrl+'/Base/ProgramToken/get',
+                    url: config.baseUrl+'Base/ProgramToken/get',
                     method:'POST',
                     data:postData,
                     success:function(res){

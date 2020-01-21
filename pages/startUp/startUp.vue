@@ -7,7 +7,7 @@
 		<view class="flexColumn pdlr4 textBox">
 			<view class="fs20 ftw">社交交友</view>
 			<view class="fs13 color6 pdt15">一路前行，不只有你</view>
-			<view class="enterBtn center fs13 pubBj" @click="Router.redirectTo({route:{path:'/pages/index/index'}})">点击进入</view>
+			<button class="enterBtn center fs13 pubBj" open-type="getUserInfo" @getuserinfo="Utils.stopMultiClick(submit)">点击进入</button>
 		</view>
 		
 	</view>
@@ -20,7 +20,8 @@
 			return {
 				Router:this.$Router,
 				showView: false,
-				wx_info:{}
+				wx_info:{},
+				Utils:this.$Utils
 			}
 		},
 		
@@ -29,13 +30,17 @@
 			// self.$Utils.loadAll(['getMainData'], self);
 		},
 		methods: {
-			getMainData() {
+			
+			submit() {
 				const self = this;
-				console.log('852369')
-				const postData = {};
-				postData.tokenFuncName = 'getProjectToken';
-				self.$apis.orderGet(postData, callback);
-			}
+				uni.setStorageSync('canClick', false);
+				const callback = (user, res) => {
+					self.Router.redirectTo({route:{path:'/pages/index/index'}})
+				};
+				self.$Utils.getAuthSetting(callback);	
+			},
+			
+			
 		}
 	};
 </script>
