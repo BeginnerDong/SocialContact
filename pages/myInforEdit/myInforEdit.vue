@@ -434,7 +434,10 @@
 						self.submitData.introduction = self.mainData.introduction;
 						self.submitData.spouse_standard = self.mainData.spouse_standard;
 						self.submitData.hobby = self.mainData.hobby;
-						self.chooseLike = self.submitData.hobby.split(',');
+						if(self.mainData.hobby!=''){
+							self.chooseLike = self.submitData.hobby.split(',');
+						};
+						
 						for (var i = 0; i < self.heightData.length; i++) {
 							if(self.heightData[i]==self.mainData.height){
 								self.heightIndex =i
@@ -533,7 +536,9 @@
 			
 			checkLike(item) {
 				const self = this;
+				console.log('self.chooseLike',self.chooseLike)
 				var position = self.chooseLike.indexOf(item);
+				console.log('self.chooseLike',self.chooseLike)
 				if (position >= 0) {
 					self.chooseLike.splice(position, 1);
 				} else {

@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view v-if="isShow">
 		
 		<view class="mglr4">
 			<view class="pr mgt15 whiteBj radius24 oh">
@@ -131,6 +131,10 @@
 		</view>
 		
 	</view>
+	<view style="width: 100%;text-align: center;margin-top: 100rpx;" v-else>
+		功能暂时关闭~请谅解
+	</view>
+
 </template>
 
 <script>
@@ -143,13 +147,19 @@
 					"../../static/images/home-img.png",
 					"../../static/images/home-img.png"
 				],
-				isMe:false
+				isMe:false,
+				isShow:false,
+				user_no:''
 			}
 		},
 		
 		onLoad(options) {
 			const self = this;
-			self.user_no = options.user_no;
+			if(options.user_no){
+				self.user_no = options.user_no;
+				self.isShow = true;
+			};
+			
 			if(self.user_no==uni.getStorageSync('user_info').user_no){
 				self.isMe = true
 			};
@@ -161,7 +171,7 @@
 			const self = this;
 			if (ops.from === 'button') {
 				return {
-					title: '金玉良缘-'+self.mainData.name,
+					title: '金遇良缘-'+self.mainData.name,
 					path: '/pages/index/index?user_no='+self.user_no, //点击分享的图片进到哪一个页面
 					imageUrl:self.mainData.mainImg[0].url,
 					success: function(res) {
